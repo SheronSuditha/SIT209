@@ -1,17 +1,4 @@
-const devices = [];
-
-devices.push({
-    user: "Mary",
-    name: "Mary's iPhone"
-});
-devices.push({
-    user: "Alex",
-    name: "Alex's Surface Pro"
-});
-devices.push({
-    user: "Mary",
-    name: "Mary's MacBook"
-});
+const devices = JSON.parse(localStorage.getItem('devices')) || []; //if no devices returns an empty array
 
 /**
  * using jquery
@@ -30,17 +17,15 @@ devices.forEach(element => {
  */
 
 $('#add-device').on('click', function () {
-    const user = $('user').val();
-    const name = $('name').val();
+    const user = $('#user').val();
+    const name = $('#name').val();
     devices.push({
         name,
         user
     });
+    localStorage.setItem('devices', JSON.stringify(devices))
     console.log(location.href = 'device-list.html');
 })
-
-
-
 
 
 /**
@@ -48,6 +33,19 @@ $('#add-device').on('click', function () {
  */
 
 /*
+devices.push({
+    user: "Mary",
+    name: "Mary's iPhone"
+});
+devices.push({
+    user: "Alex",
+    name: "Alex's Surface Pro"
+});
+devices.push({
+    user: "Mary",
+    name: "Mary's MacBook"
+});
+
 devices.forEach(element => {
     const table = document.querySelector("#devices");
     const row = document.createElement('tr');
