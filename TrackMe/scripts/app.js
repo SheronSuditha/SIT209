@@ -25,6 +25,22 @@ devices.forEach(element => {
     `)
 });
 
+/**
+ * Adding a device
+ */
+
+$('#add-device').on('click', function () {
+    const user = $('user').val();
+    const name = $('name').val();
+    devices.push({
+        name,
+        user
+    });
+    console.log(location.href = 'device-list.html');
+})
+
+
+
 
 
 /**
@@ -49,4 +65,16 @@ devices.forEach(element => {
 
     table.appendChild(row);
 });
+*/
+
+/*
+document.querySelector('#add-device').addEventListener('click', function () {
+    const user = document.querySelector('#user').value;
+    const name = document.querySelector('#name').value;
+    devices.push({
+        user,
+        name
+    }) //can use because user: user = user ES6
+    console.log(devices)
+})
 */
