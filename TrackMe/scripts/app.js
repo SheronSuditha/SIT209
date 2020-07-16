@@ -27,6 +27,17 @@ $('#add-device').on('click', function () {
     console.log(location.href = 'device-list.html');
 })
 
+/**
+ * using send-command
+ */
+$('#send-command').on('click', function () {
+    const command = $('#command').val();
+    console.log(`command is ${command}`)
+})
+
+
+
+
 
 /**
  * using basic js for DOM manipulation.
