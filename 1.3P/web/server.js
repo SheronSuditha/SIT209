@@ -14,7 +14,16 @@ app.get('/', (req, res) => {
     res.sendFile(`${base}/device-list.html`)
 })
 
-app.get('')
+
+app.get('*', (req, res) => {
+    res.sendFile(`${base}/404.html`);
+})
+
+
+
+
+
+
 
 /**
  * Listen on port 3000
