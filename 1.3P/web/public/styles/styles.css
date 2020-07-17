@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+
+body {
+    height: 100vh;
+    background-color: rgb(206, 206, 206);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content {
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    height: 300px;
+    width: 900px;
+
+    text-align: center;
+}
+
+.title {
+    text-align: center;
+    font-size: large;
+}
+
+.information {
+    font-size: medium;
+}
+
+.aboutme {
+    margin: 10px;
+    background-color: rgb(163, 163, 163);
+    transition: 0.3s;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.aboutme:hover {
+    color: white;
+    background-color: rgb(66, 66, 66);
+}
+
+.aboutme:hover .title {
+    color: rgb(28, 143, 250);
+}
+
+
+.skills {
+    margin: 10px;
+    background-color: rgb(163, 163, 163);
+    padding-left: 50px;
+    padding-right: 50px;
+    transition: 0.3s;
+}
+
+.skills:hover {
+    color: white;
+    background-color: rgb(66, 66, 66);
+}
+
+
+.units {
+    margin: 10px;
+    background-color: rgb(163, 163, 163);
+    list-style: none;
+    padding-left: 50px;
+    padding-right: 50px;
+    transition: 0.3s;
+
+}
+
+.units>.information {
+    line-height: 40px;
+}
+
+/* Spans */
+#intro1 {
+    font-size: small;
+}
+
+.skills:hover .title {
+    color: rgb(28, 143, 250);
+}
+
+
+.skills:hover #intro1 {
+    color: red;
+}
+
+.units:hover {
+    color: white;
+    background-color: rgb(66, 66, 66);
+}
+
+.units:hover .title {
+    color: rgb(28, 143, 250);
+}

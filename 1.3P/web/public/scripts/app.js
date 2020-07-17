@@ -1,3 +1,6 @@
+$('#navbar').load('navbar.html')
+$('#footer').load('footer.html')
+
 const devices = JSON.parse(localStorage.getItem('devices')) || []; //if no devices returns an empty array
 
 /**
@@ -24,7 +27,7 @@ $('#add-device').on('click', function () {
         user
     });
     localStorage.setItem('devices', JSON.stringify(devices))
-    console.log(location.href = 'device-list.html');
+    console.log(location.href = '/');
 })
 
 /**
