@@ -14,6 +14,10 @@ app.get('/', (req, res) => {
     res.sendFile(`${base}/device-list.html`)
 })
 
+app.get('/register', (req, res) => {
+    res.sendFile(`${base}/registeration.html`)
+})
+
 app.get('/register-device', (req, res) => {
     res.sendFile(`${base}/register-device.html`)
 })
