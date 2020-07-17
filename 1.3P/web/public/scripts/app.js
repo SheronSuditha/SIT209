@@ -38,10 +38,6 @@ $('#send-command').on('click', function () {
     console.log(`command is ${command}`)
 })
 
-
-
-
-
 /**
  * using basic js for DOM manipulation.
  */
