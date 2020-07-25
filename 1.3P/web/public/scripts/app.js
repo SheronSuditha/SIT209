@@ -119,7 +119,14 @@ function handleLogin() {
     }
 }
 
+/**
+ * logout
+ */
 
+function logout() {
+    localStorage.removeItem('isAuthenticated');
+    location.href = '/login';
+}
 
 
 
