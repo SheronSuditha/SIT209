@@ -92,6 +92,22 @@ function check_for_user(username, password) {
 }
 
 
+/**
+ * handle login
+ */
+
+$('#login').on('click', handleLogin);
+
+function handleLogin() {
+    const username = $('#user').val();
+    const password = $('#password').val();
+
+    const result = check_for_user(username, password);
+
+    if (result === true) {
+        window.location.replace("/")
+    }
+}
 
 
 
