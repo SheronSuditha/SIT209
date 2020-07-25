@@ -3,6 +3,7 @@ $('#footer').load('footer.html')
 
 const devices = JSON.parse(localStorage.getItem('devices')) || []; //if no devices returns an empty array
 const local_users = JSON.parse(localStorage.getItem('users')) || [];
+let isAuthenticated = JSON.parse(localStorage.getItem('isAuthenticated')) || {};
 
 /**
  * using jquery
@@ -82,8 +83,7 @@ function handle_register() {
 }
 
 function check_for_user(username, password) {
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-    let usrr = users.find(usr => usr.username === username && usr.password === password)
+    let usrr = local_users.find(usr => usr.username === username && usr.password === password)
     if (usrr) {
         return true;
     } else {
@@ -105,10 +105,19 @@ function handleLogin() {
     const result = check_for_user(username, password);
 
     if (result === true) {
+        isAuthenticated = {
+            status: true,
+            username: username
+        }
+        console.log(isAuthenticated)
+        localStorage.setItem('isAuthenticated', JSON.stringify(isAuthenticated));
         window.location.replace("/")
+    } else {
+        isAuthenticated = {
+            status: false,
+        }
     }
 }
-
 
 
 
