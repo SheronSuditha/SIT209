@@ -24,6 +24,7 @@ devices.forEach(element => {
 $('#add-device').on('click', function () {
     const user = $('#user').val();
     const name = $('#name').val();
+
     devices.push({
         name,
         user
@@ -129,63 +130,20 @@ function logout() {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 /**
- * using basic js for DOM manipulation.
+ * using api
  */
 
-/*
-devices.push({
-    user: "Mary",
-    name: "Mary's iPhone"
-});
-devices.push({
-    user: "Alex",
-    name: "Alex's Surface Pro"
-});
-devices.push({
-    user: "Mary",
-    name: "Mary's MacBook"
-});
-
-devices.forEach(element => {
-    const table = document.querySelector("#devices");
-    const row = document.createElement('tr');
-
-    const user = document.createElement('td');
-    const userText = document.createTextNode(element.user);
-    user.appendChild(userText);
-
-    const name = document.createElement('td');
-    const nameText = document.createTextNode(element.name)
-    name.appendChild(nameText);
-
-    row.appendChild(user);
-    row.appendChild(name);
-
-    table.appendChild(row);
-});
-*/
-
-/*
-document.querySelector('#add-device').addEventListener('click', function () {
-    const user = document.querySelector('#user').value;
-    const name = document.querySelector('#name').value;
-    devices.push({
-        user,
-        name
-    }) //can use because user: user = user ES6
-    console.log(devices)
-})
-*/
+$.get('http://localhost:3001/devices')
+    .then(response => {
+        response.forEach(device => {
+            $('#devices tbody').append(`
+                <tr>
+                    <td>${device.user}</td>       
+                    <td>${device.name}</td>
+                <tr>
+            `)
+        })
+    }).catch(error => {
+        console.log(`Error: ${error}`);
+    });
