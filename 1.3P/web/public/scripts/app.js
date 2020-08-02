@@ -5,6 +5,8 @@ const devices = JSON.parse(localStorage.getItem('devices')) || []; //if no devic
 const local_users = JSON.parse(localStorage.getItem('users')) || [];
 let isAuthenticated = JSON.parse(localStorage.getItem('isAuthenticated')) || {};
 
+const API_URL = 'http://localhost:5000/api'
+
 /**
  * using jquery
  */
@@ -36,7 +38,7 @@ $('#add-device').on('click', function () {
      * Code to handle sending the data into the api
      */
 
-    $.post('http://localhost:3001/devices', body)
+    $.post(`${API_URL}/devices`, body)
         .then(response => {
             /**
              * handles saving the data in the local storage
@@ -155,7 +157,7 @@ function logout() {
  * using api
  */
 
-$.get('http://localhost:3001/devices')
+$.get(`${API_URL}/devices`)
     .then(response => {
         response.forEach(device => {
             $('#devices tbody').append(`
