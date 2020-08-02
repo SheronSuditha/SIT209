@@ -24,13 +24,34 @@ devices.forEach(element => {
 $('#add-device').on('click', function () {
     const user = $('#user').val();
     const name = $('#name').val();
+    const sensorData = [];
 
-    devices.push({
+    const body = {
         name,
-        user
-    });
-    localStorage.setItem('devices', JSON.stringify(devices))
-    console.log(location.href = '/');
+        user,
+        sensorData
+    };
+
+    /**
+     * Code to handle sending the data into the api
+     */
+
+    $.post('http://localhost:3001/devices', body)
+        .then(response => {
+            /**
+             * handles saving the data in the local storage
+             */
+
+            devices.push({
+                name,
+                user
+            });
+            localStorage.setItem('devices', JSON.stringify(devices))
+            location.href = "/";
+        })
+        .catch(error => {
+            console.error(`Error: ${error}`);
+        })
 })
 
 /**
