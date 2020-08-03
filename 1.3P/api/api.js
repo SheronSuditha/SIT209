@@ -43,7 +43,19 @@ app.get('/api/test', (req, res) => {
 });
 
 
-
+app.get('/api/devices/:deviceId/device-history', (req, res) => {
+    const {
+        deviceId
+    } = req.params;
+    Device.findOne({
+        "_id": deviceId
+    }, (err, devices) => {
+        const {
+            sensorData
+        } = devices;
+        return err ? res.send(err) : res.send(sensorData);
+    })
+})
 
 app.post('/api/registration', (req, res) => {
     const {
