@@ -1,7 +1,5 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-
-
 const mongoose = require('mongoose');
 const app = express();
 app.use(bodyParser.urlencoded({
@@ -20,19 +18,92 @@ app.get('/docs', (req, res) => {
 });
 const port = 5000;
 
+
 const Device = require('./models/device')
+const User = require('./models/user');
 
 mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
 
+/**
+ * 
+ * @api {get} /api/test Test-Endpoint
+ * @apiGroup Help
+ * @apiSuccessExample {string} Success-Response:
+ * {
+ *     response : The API is Working!
+ * }
+ */
 app.get('/api/test', (req, res) => {
-    res.send('The Api is working');
+    res.json({
+        response: "The API is Working!"
+    })
 });
 
+
+
+
+app.post('/api/registration', (req, res) => {
+    const {
+        name,
+        password,
+        isAdmin
+    } = req.body;
+    const newUser = new User({
+        name,
+        password,
+        isAdmin
+    })
+
+    newUser.save(err => {
+        return err ? res.send(err) : res.status(200).json({
+            success: true,
+            message: "Created new User"
+        })
+    })
+})
+
+app.post('/api/authentication', (req, res) => {
+    console.log(req.body);
+    const {
+        name,
+        password
+    } = req.body;
+
+    console.log(name, password);
+
+    User.findOne({
+        name
+    }, (err, found) => {
+        err === true ? res.json({
+                success: false,
+                message: "Something Happened!",
+                error: err.message
+            }) :
+            found === null ?
+            res.status(404).json({
+                success: false,
+                message: 'No User Found!',
+                isAdmin: null
+            }) :
+            found.password === password ?
+            res.status(200).json({
+                success: true,
+                message: 'Authenticated successfully',
+                isAdmin: found.isAdmin
+            }) :
+            res.status(403).json({
+                success: false,
+                message: 'Invalid Password',
+                isAdmin: null
+            })
+    })
+})
+
 /**
- * @api {get} /api/devices AllDevices An array of all devices
+ * @api {get} /api/devices All devices added
  * @apiGroup Device
  * @apiSuccessExample {json} Success-Response:
  *  [
@@ -75,6 +146,53 @@ app.get('/api/devices', (req, res) => {
     });
 });
 
+/**
+ * 
+ * @api {post} /api/send-command Send Command
+ * @apiGroup Commands
+ * 
+ * @apiParamExample {json} Request-Example: 
+ *  {
+ *      message: "Something here in the body"
+ *  }
+ * @apiSuccessExample {type} Success-Response:
+ * {
+ *     Status : "Success!"
+ * }
+ * 
+ * 
+ */
+app.post('/api/send-command', (req, res) => {
+    console.log(body);
+    res.json({
+        status: "Success!",
+    })
+});
+
+
+/**
+ * 
+ * @api {post} /api/devices Add a device
+ * @apiName Devices
+ * @apiGroup Device
+ * @apiVersion  1.0.0
+ * @apiParamExample {json} Request-Example: 
+ *  {
+ *      name: "Device Name",
+ *      user: "Username",
+ *      sensorData: []
+ *  }
+ * @apiSuccessExample {json} Success-Response:
+ * {
+ *     response : "Device Successfully added!"
+ * }
+ * @apiErrorExample {json} Error-Response:
+     {
+         response: "Error",
+         error: errorMessage
+     }
+ * 
+ */
 app.post('/api/devices', (req, res) => {
     console.log(req.body)
     const {
@@ -88,7 +206,12 @@ app.post('/api/devices', (req, res) => {
         sensorData
     });
     newDevice.save(err => {
-        return err ? res.send(err) : res.send('successfully added device and data');
+        return err ? res.json({
+            response: "Error",
+            error: err.message
+        }) : res.json({
+            response: "Device Successfully added!"
+        });
     });
 });
 
