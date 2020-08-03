@@ -86,25 +86,43 @@ function handle_register() {
         return $('#alert').text("Entered passwords does not match.")
     }
 
-    console.log(check_for_user(username, password))
+    $.post(`${API_URL}/registration`, {
+        name: username,
+        password,
+        isAdmin: false
+    }).then((response) => {
+        if (response.success) {
+            successful_registeration();
+            location.href = "/login"
+        } else {
+            an_error_occurred_registeration();
+        }
+    })
 
-    if (check_for_user(username, password) === true) {
-        $('#alert').removeClass("alert-success")
-        $('#alert').addClass("alert-danger")
-        $('#alert').show();
-        return $('#alert').text("Already Registered")
-    } else {
-        $('#alert').show();
-        $('#alert').removeClass("alert-danger")
-        $('#alert').addClass("alert-success")
-        $('#alert').text("Success!")
-        local_users.push({
-            username,
-            password
-        })
-        localStorage.setItem('users', JSON.stringify(local_users))
-    }
 }
+
+function an_error_occurred_registeration() {
+    $('#alert').removeClass("alert-success")
+    $('#alert').addClass("alert-danger")
+    $('#alert').show();
+    $('#alert').text("Something happened! Please retry")
+}
+
+function user_already_registered() {
+    $('#alert').removeClass("alert-success")
+    $('#alert').addClass("alert-danger")
+    $('#alert').show();
+    $('#alert').text("Already Registered")
+}
+
+function successful_registeration() {
+    $('#alert').show();
+    $('#alert').removeClass("alert-danger")
+    $('#alert').addClass("alert-success")
+    $('#alert').text("Success!")
+}
+
+
 
 function check_for_user(username, password) {
     let usrr = local_users.find(usr => usr.username === username && usr.password === password)
@@ -120,14 +138,14 @@ function check_for_user(username, password) {
  * handle login
  */
 
-$('#login').on('click', handleLogin);
+$('#login').on('click', () => {
+    handleLogin();
+});
 
 function handleLogin() {
     const username = $('#user').val();
     const password = $('#password').val();
-
-    const resp = handle_auth(username, password);
-
+    handle_auth(username, password);
 }
 
 function handle_auth(username, password) {
@@ -135,16 +153,15 @@ function handle_auth(username, password) {
         name: username,
         password
     }).then((response) => {
-        console.log(response)
+        console.warn(response)
         if (response.success) {
             localStorage.setItem('user', username);
             localStorage.setItem('isAdmin', response.isAdmin);
             localStorage.setItem('isAuthenticated', true);
             location.href = "/";
-            return true;
         } else {
-            console.log("no")
-            return false;
+            $('#login-alert').show();
+            $('#login-alert').text("Error Invalid Details!");
         }
     })
 }
@@ -155,7 +172,8 @@ function handle_auth(username, password) {
  */
 
 function logout() {
-    localStorage.removeItem('isAuthenticated');
+    localStorage.removeItem('user');
+    localStorage.removeItem('isAuthenticated')
     location.href = '/login';
 }
 
