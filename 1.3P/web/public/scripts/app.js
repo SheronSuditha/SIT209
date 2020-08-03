@@ -126,22 +126,29 @@ function handleLogin() {
     const username = $('#user').val();
     const password = $('#password').val();
 
-    const result = check_for_user(username, password);
+    const resp = handle_auth(username, password);
 
-    if (result === true) {
-        isAuthenticated = {
-            status: true,
-            username: username
-        }
-        console.log(isAuthenticated)
-        localStorage.setItem('isAuthenticated', JSON.stringify(isAuthenticated));
-        window.location.replace("/")
-    } else {
-        isAuthenticated = {
-            status: false,
-        }
-    }
 }
+
+function handle_auth(username, password) {
+    $.post(`${API_URL}/authentication`, {
+        name: username,
+        password
+    }).then((response) => {
+        console.log(response)
+        if (response.success) {
+            localStorage.setItem('user', username);
+            localStorage.setItem('isAdmin', response.isAdmin);
+            localStorage.setItem('isAuthenticated', true);
+            location.href = "/";
+            return true;
+        } else {
+            console.log("no")
+            return false;
+        }
+    })
+}
+
 
 /**
  * logout

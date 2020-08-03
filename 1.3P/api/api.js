@@ -85,7 +85,6 @@ app.post('/api/authentication', (req, res) => {
     } = req.body;
 
     console.log(name, password);
-
     User.findOne({
         name
     }, (err, found) => {
