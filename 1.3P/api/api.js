@@ -22,7 +22,7 @@ const port = 5000;
 const Device = require('./models/device')
 const User = require('./models/user');
 
-mongoose.connect(process.env.MONGO_URL, {
+mongoose.connect('mongodb+srv://fildon:fildon@mongoo@sit209-sheron.glonn.mongodb.net/SIT?retryWrites=true&w=majority', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
@@ -42,11 +42,32 @@ app.get('/api/test', (req, res) => {
     })
 });
 
+app.get('/api/users/:user/devices', (req, res) => {
+    const {
+        user
+    } = req.params;
+    Device.find({
+        "user": user
+    }, (err, devices) => {
+        return err ? res.json({
+                status: false,
+                message: "Something happened!",
+                error: err.message,
+                data: null
+            }) :
+            res.json({
+                status: true,
+                data: devices
+            })
+    })
+})
 
 app.get('/api/devices/:deviceId/device-history', (req, res) => {
+
     const {
         deviceId
     } = req.params;
+    console.log(deviceId);
     Device.findOne({
         "_id": deviceId
     }, (err, devices) => {
@@ -70,10 +91,15 @@ app.post('/api/registration', (req, res) => {
     })
 
     newUser.save(err => {
-        return err ? res.send(err) : res.status(200).json({
-            success: true,
-            message: "Created new User"
-        })
+        return err ? res.json({
+                success: false,
+                message: "Something happened!",
+                error: err.message
+            }) :
+            res.status(200).json({
+                success: true,
+                message: "Created new User"
+            })
     })
 })
 
@@ -94,7 +120,7 @@ app.post('/api/authentication', (req, res) => {
                 error: err.message
             }) :
             found === null ?
-            res.status(404).json({
+            res.json({
                 success: false,
                 message: 'No User Found!',
                 isAdmin: null
