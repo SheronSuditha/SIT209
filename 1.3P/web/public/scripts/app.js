@@ -5,19 +5,55 @@ const devices = JSON.parse(localStorage.getItem('devices')) || []; //if no devic
 const local_users = JSON.parse(localStorage.getItem('users')) || [];
 let isAuthenticated = JSON.parse(localStorage.getItem('isAuthenticated')) || {};
 
-const API_URL = 'http://localhost:5000/api'
+const current_user = localStorage.getItem('user');
+
+const API_URL = 'https://api-na3dzd5ri.vercel.app/api'
+if (current_user) {
+    $.get(`${API_URL}/users/${current_user}/devices`)
+        .then((response) => {
+            console.log(response)
+            response.data.forEach((device) => {
+                $('#devices tbody').append(`
+                    <tr data-device-id=${device._id}>
+                        <td>${device.user}</td>
+                        <td>${device.name}</td>
+                    </tr>
+                `)
+
+                $('#devices tbody tr').on('click', (e) => {
+                    const deviceId = e.currentTarget.getAttribute('data-device-id');
+                    $.get(`${API_URL}/devices/${deviceId}/device-history`)
+                        .then(response => {
+                            response.map(sensorData => {
+                                console.log(sensorData.ts, sensorData.temp, sensorData.loc.lat, sensorData.loc.lon)
+                                $('#historyContent').append(`<tr>
+                                <td>${sensorData.ts}</td> 
+                                <td>${sensorData.temp}</td>      
+                                <td>${sensorData.loc.lat}</td>      
+                                <td>${sensorData.loc.lon}</td>   
+                                 </tr>  
+                                 `);
+                            });
+                            $('#historyModal').modal('show');
+                        })
+                })
+            })
+        })
+        .catch(error => {
+            console.log(`Error: ${error}`)
+        })
+} else {
+    const path = window.location.pathname;
+    if (path !== '/login' && path !== '/register') {
+        location.href = "/login";
+    }
+}
+
 
 /**
  * using jquery
  */
-devices.forEach(element => {
-    $('#devices tbody').append(`
-        <tr>
-            <td>${element.user}</td>
-            <td>${element.name}</td>
-        <tr>
-    `)
-});
+
 
 /**
  * Adding a device
@@ -182,16 +218,6 @@ function logout() {
  * using api
  */
 
-$.get(`${API_URL}/devices`)
-    .then(response => {
-        response.forEach(device => {
-            $('#devices tbody').append(`
-                <tr>
-                    <td>${device.user}</td>       
-                    <td>${device.name}</td>
-                <tr>
-            `)
-        })
-    }).catch(error => {
-        console.log(`Error: ${error}`);
-    });
+/**
+ * Handling the model
+ */
