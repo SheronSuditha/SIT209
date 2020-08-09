@@ -1,1 +1,3 @@
 generated-docs/
+node_modules
+.vercel
