@@ -7,7 +7,9 @@ let isAuthenticated = JSON.parse(localStorage.getItem('isAuthenticated')) || {};
 
 const current_user = localStorage.getItem('user');
 
-const API_URL = 'https://api-na3dzd5ri.vercel.app/api'
+const API_URL = 'https://api-na3dzd5ri.vercel.app/api';
+const MQTT_URL = 'http://localhost:5001/send-command'
+
 if (current_user) {
     $.get(`${API_URL}/users/${current_user}/devices`)
         .then((response) => {
@@ -96,8 +98,15 @@ $('#add-device').on('click', function () {
  * using send-command
  */
 $('#send-command').on('click', function () {
+    const device_id = $('#deviceid').val();
     const command = $('#command').val();
-    console.log(`command is ${command}`)
+    console.log(device_id, command)
+    $.post(`${MQTT_URL}`, {
+        device_id,
+        command
+    }).then((response) => {
+        console.log(response);
+    })
 })
 
 

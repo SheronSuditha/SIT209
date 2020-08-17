@@ -1,0 +1,24 @@
+{
+  "name": "mqtt-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "mqtt.js",
+  "scripts": {
+    "start": "node mqtt.js",
+    "doc": "apidoc -o public/generated-docs/ -e node_modules/"
+  },
+  "author": "SheronSuditha",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.10.0",
+    "mqtt": "^4.1.0",
+    "random-coordinates": "^1.0.1",
+    "random-int": "^2.0.1"
+  },
+  "devDependencies": {
+    "apidoc": "^0.25.0"
+  }
+}

@@ -183,29 +183,6 @@ app.get('/api/devices', (req, res) => {
     });
 });
 
-/**
- * 
- * @api {post} /api/send-command Send Command
- * @apiGroup Commands
- * 
- * @apiParamExample {json} Request-Example: 
- *  {
- *      message: "Something here in the body"
- *  }
- * @apiSuccessExample {type} Success-Response:
- * {
- *     Status : "Success!"
- * }
- * 
- * 
- */
-app.post('/api/send-command', (req, res) => {
-    console.log(body);
-    res.json({
-        status: "Success!",
-    })
-});
-
 
 /**
  * 
