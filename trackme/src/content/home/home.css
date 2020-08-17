@@ -1,0 +1,17 @@
+.home {
+    color: white;
+}
+
+.content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 95vh;
+}
+
+.wrap {
+    text-align: center;
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+}

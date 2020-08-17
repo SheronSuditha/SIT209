@@ -1,48 +1,53 @@
-import React from "react";
-import {
-  AppBar,
-  Toolbar,
-  IconButton,
-  Typography,
-  Button,
-  makeStyles,
-} from "@material-ui/core";
-import MenuIcon from "@material-ui/icons/Menu";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    flexGrow: 1,
-  },
-}));
-
-function Nav() {
-  const classes = useStyles();
+import React, { useEffect, useState } from "react";
+import { Navbar, Nav, Form, Button, FormControl } from "react-bootstrap";
+import { handle_logout } from "../../utils/auth";
+import { useHistory } from "react-router-dom";
+function Navig({ Username }) {
+  const history = useHistory();
+  const handleLogout = (e) => {
+    e.preventDefault();
+    handle_logout();
+    history.push("/login");
+  };
   return (
-    <div className={classes.root}>
-      <AppBar position="static" color="primary">
-        <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" className={classes.title}>
-            TrackMe
-          </Typography>
-          <Button color="inherit">Login</Button>
-        </Toolbar>
-      </AppBar>
+    <div>
+      <Navbar bg="primary" variant="dark" justify-content-between>
+        <Navbar.Brand href="#home">
+          <h1>TrackMe</h1>
+        </Navbar.Brand>
+        <Nav className="mr-auto">
+          <Nav.Link href="/">
+            <h4>Home</h4>
+          </Nav.Link>
+          <Nav.Link href="/register-device">
+            <h4>Register Devices</h4>
+          </Nav.Link>
+          <Nav.Link href="/send-command">
+            <h4>Send Command</h4>
+          </Nav.Link>
+          <Nav.Link href="/about-me">
+            <h4>About Me</h4>
+          </Nav.Link>
+        </Nav>
+        <div>
+          {Username !== null ? (
+            <div>
+              <h4 style={{ color: "white" }}>{Username}</h4>{" "}
+              <Button
+                variant="danger"
+                style={{ fontFamily: "Fira Sans" }}
+                onClick={handleLogout}
+              >
+                Logout
+              </Button>
+            </div>
+          ) : (
+            <h4 style={{ color: "red" }}>{Username}</h4>
+          )}
+        </div>
+      </Navbar>
     </div>
   );
 }
 
-export default Nav;
+export default Navig;
