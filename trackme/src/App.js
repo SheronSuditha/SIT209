@@ -1,102 +1,87 @@
-import React, { useState, useEffect, Component } from "react";
+import React, { useState, useEffect, Component } from 'react';
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 
 /**
  * pages
  */
-import Navig from "./content/navigation/nav";
-import Login from "./content/login/login";
-import Register from "./content/register/register";
-import Home from "./content/home/home";
-import RegDevice from "./content/regdevice/regdevice";
-import SendCommand from "./content/sendcommand/sendCommand";
+import Navig from './content/navigation/nav';
+import Login from './content/login/login';
+import Register from './content/register/register';
+import Home from './content/home/home';
+import RegDevice from './content/regdevice/regdevice';
+import SendCommand from './content/sendcommand/sendCommand';
 
-import { check_user } from "./utils/auth";
-import { Jumbotron, Container } from "react-bootstrap";
+import { check_user } from './utils/auth';
+import { Jumbotron, Container } from 'react-bootstrap';
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [Username, setUsername] = useState(null);
-  setTimeout(() => {
-    auth();
-    setIsLoading(false);
-  }, 2000);
+	//const [ Username, setUsername ] = useState(null);
+	const ProtectedRoutes = ({ component: Component, ...rest }) => {
+		const [ isLoading, setIsLoading ] = useState(true);
+		const [ Authentication, setAuthentication ] = useState(false);
+		setTimeout(() => {
+			setIsLoading(false);
+		}, 3000);
 
-  const [Authentication, setAuthentication] = useState(true);
-  const auth = async () => {
-    const status = await check_user();
-    if (status.state === true) {
-      setAuthentication(true);
-      setUsername(status.username);
-    } else {
-      setAuthentication(false);
-      setUsername(null);
-    }
-  };
-  const ProtectedRoutes = ({ component: Component, ...rest }) => {
-    return (
-      <Route
-        {...rest}
-        render={(props) => {
-          console.log(Authentication);
-          if (isLoading === false && Authentication === true) {
-            return <Component {...props} />;
-          } else {
-            return <Redirect to="/login" />;
-          }
-        }}
-      />
-    );
-  };
+		const auth = async () => {
+			const status = await check_user();
+			const status_data = await status.state;
+			if (status_data === true) {
+				setAuthentication(true);
+				//setUsername(status.username);
+			} else {
+				setAuthentication(false);
+				//setUsername(null);
+			}
+		};
 
-  return (
-    <div>
-      <Router>
-        <div>
-          <Navig Username={Username} />
+		auth();
 
-          {isLoading === true ? (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "95vh",
-              }}
-            >
-              <Jumbotron style={{ alignItems: "center" }}>
-                <Container>
-                  <h1>Hang on!</h1>
-                  <p>Getting my gear ready to display your devices!</p>
-                </Container>
-              </Jumbotron>
-            </div>
-          ) : (
-            <Switch>
-              <ProtectedRoutes path="/" exact component={Home} />
-              <Route path="/login" exact component={Login} />
-              <Route path="/register" exact component={Register} />
-              <ProtectedRoutes
-                path="/send-command"
-                exact
-                component={SendCommand}
-              />
-              <ProtectedRoutes
-                path="/register-device"
-                exact
-                component={RegDevice}
-              />
-            </Switch>
-          )}
-        </div>
-      </Router>
-    </div>
-  );
+		return isLoading !== true ? (
+			<Route
+				{...rest}
+				render={(props) => {
+					console.log(Authentication);
+					if (Authentication === true) {
+						return <Component {...props} />;
+					} else {
+						return <Redirect to="/login" />;
+					}
+				}}
+			/>
+		) : (
+			<div
+				style={{
+					display: 'flex',
+					justifyContent: 'center',
+					alignItems: 'center',
+					height: '95vh'
+				}}
+			>
+				<Jumbotron style={{ alignItems: 'center' }}>
+					<Container>
+						<h1>Hang on!</h1>
+						<p>Getting my gear ready to display your devices!</p>
+					</Container>
+				</Jumbotron>
+			</div>
+		);
+	};
+
+	return (
+		<Router>
+			<div>
+				<Navig />
+				<Switch>
+					<Route path="/login" exact component={Login} />
+					<Route path="/register" exact component={Register} />
+					<ProtectedRoutes path="/" exact component={Home} />
+					<ProtectedRoutes path="/send-command" exact component={SendCommand} />
+					<ProtectedRoutes path="/register-device" exact component={RegDevice} />
+				</Switch>
+			</div>
+		</Router>
+	);
 }
 export default App;

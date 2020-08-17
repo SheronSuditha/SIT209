@@ -1,3 +1,6 @@
+const axios = require('axios');
+const API_URL = 'https://api-na3dzd5ri.vercel.app/api';
+
 export async function check_user() {
     let username = localStorage.getItem('username');
     let status = localStorage.getItem('isAuthenticated') || false;
@@ -18,4 +21,12 @@ export async function check_user() {
 
 export function handle_logout() {
     localStorage.clear();
+}
+
+export async function get_user_fromauth(username, password) {
+    const resp_ = await axios.post(`${API_URL}/authentication`, {
+        name: username,
+        password
+    });
+    return resp_;
 }
