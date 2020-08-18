@@ -1,5 +1,6 @@
 const axios = require('axios');
 const API_URL = 'https://api-na3dzd5ri.vercel.app/api';
+const MQTT_URL = 'http://localhost:5001/send-command';
 
 export async function check_user() {
     let username = localStorage.getItem('username');
@@ -50,5 +51,26 @@ export async function register_user(user, pass) {
         isAdmin: false
     })
     const data = resp.data;
+    return data;
+}
+
+export async function register_device(devname, username) {
+    const sensorData = [];
+    const body = {
+        name: devname,
+        user: username,
+        sensorData
+    }
+    const resp = await axios.post(`${API_URL}/devices`, body)
+    const data = await resp.data;
+    return data;
+}
+
+export async function send_command_mqtt(device, command) {
+    const resp = await axios.post(`${MQTT_URL}`, {
+        device_id: device,
+        command
+    })
+    const data = await resp.data;
     return data;
 }

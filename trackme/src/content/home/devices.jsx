@@ -7,9 +7,6 @@ import { useDispatch } from "react-redux";
 import { alert, remove_alert } from '../../redux/actions/alert_a'
 import {add_location_Data} from '../../redux/actions/device_a';
 
-
-
-
 function Devices({ id, name, device, sensorData }) {
   const [show, setShow] = useState(false);
   const [target, setTarget] = useState(null);

@@ -34,7 +34,7 @@ function Navig() {
 	return (
 		<div>
 			<Navbar bg="primary" variant="dark" justify-content-between>
-				<Navbar.Brand href="#home">
+				<Navbar.Brand href="/">
 					<h1>TrackMe</h1>
 				</Navbar.Brand>
 				<Nav className="mr-auto">
