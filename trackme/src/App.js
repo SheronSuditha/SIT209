@@ -14,8 +14,13 @@ import SendCommand from './content/sendcommand/sendCommand';
 
 import { check_user } from './utils/auth';
 import { Jumbotron, Container } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
+
+import { set_username } from './redux/actions/user_a';
 
 function App() {
+	const dispatch = useDispatch();
+
 	//const [ Username, setUsername ] = useState(null);
 	const ProtectedRoutes = ({ component: Component, ...rest }) => {
 		const [ isLoading, setIsLoading ] = useState(true);
@@ -68,6 +73,18 @@ function App() {
 			</div>
 		);
 	};
+
+	const check_for_username = () => {
+		if (localStorage.getItem('username')) {
+			dispatch(
+				set_username({
+					username: localStorage.getItem('username')
+				})
+			);
+		}
+	};
+
+	check_for_username();
 
 	return (
 		<Router>

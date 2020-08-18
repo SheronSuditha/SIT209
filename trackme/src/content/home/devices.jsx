@@ -2,6 +2,14 @@ import React, { useState, useRef, useEffect } from "react";
 import { Button, Modal, Overlay, Popover } from "react-bootstrap";
 import Location from "./location";
 import { get_device_history } from "../../utils/auth";
+import { useDispatch } from "react-redux";
+
+import { alert, remove_alert } from '../../redux/actions/alert_a'
+import {add_location_Data} from '../../redux/actions/device_a';
+
+
+
+
 function Devices({ id, name, device, sensorData }) {
   const [show, setShow] = useState(false);
   const [target, setTarget] = useState(null);
@@ -9,27 +17,28 @@ function Devices({ id, name, device, sensorData }) {
   const [status, setstatus] = useState(false);
   const [locationData, setlocationData] = useState([]);
   const [loading, setloading] = useState(false);
-
-  useEffect(() => {
-    setlocationData(sensorData);
-    tester();
-    return () => {
-      //asd
-    };
-  }, [sensorData]);
-
-  const tester = async () => {
-    console.log(sensorData);
-  };
+  const dispatch = useDispatch()
 
   const handleClick = async (e) => {
     e.preventDefault();
     setloading(true);
+    dispatch(alert({
+      message: "Loading Location details"
+    }))
+
+    const resp = await get_device_history(id);
+    
+
     console.log(locationData);
-    setShow(true);
     setTimeout(() => {
       setloading(false);
-    }, 1000);
+      setShow(true);
+      console.log(resp);
+      dispatch(add_location_Data({
+        location: resp
+      }))
+      dispatch(remove_alert())
+    }, 2000);
   };
 
   return (
@@ -54,15 +63,17 @@ function Devices({ id, name, device, sensorData }) {
           </Button>
         </td>
       </tr>
-      {loading === true ? (
-        <h1>Loading</h1>
-      ) : (
+      {
+        loading !== true? (
         <Location
           show={show}
           onHide={() => setShow(false)}
           location={sensorData}
         />
-      )}
+        ) :
+        ""
+      }
+      
     </>
   );
 }

@@ -42,3 +42,13 @@ export async function get_device_history(deviceid) {
     const data = await resp.data;
     return data;
 }
+
+export async function register_user(user, pass) {
+    const resp = await axios.post(`${API_URL}/registration`, {
+        name: user,
+        password: pass,
+        isAdmin: false
+    })
+    const data = resp.data;
+    return data;
+}

@@ -1,7 +1,4 @@
-const initialState = {
-    username: null,
-    device_details: null
-}
+const initialState = [];
 
 export default function device_reducer(state = initialState, {
     type,
@@ -9,10 +6,7 @@ export default function device_reducer(state = initialState, {
 }) {
     switch (type) {
         case 'ADD_DEVICE':
-            state = {
-                username: payload.username,
-                device_details: payload.device
-            };
+            state = payload.location
         default:
             return state;
     }
