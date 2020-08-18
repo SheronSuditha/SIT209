@@ -30,3 +30,15 @@ export async function get_user_fromauth(username, password) {
     });
     return resp_;
 }
+
+export async function get_user_devices() {
+    const user = localStorage.getItem('username');
+    const resp = await axios.get(`${API_URL}/users/${user}/devices`);
+    return resp.data;
+}
+
+export async function get_device_history(deviceid) {
+    const resp = await axios.get(`${API_URL}/devices/${deviceid}/device-history`);
+    const data = await resp.data;
+    return data;
+}
